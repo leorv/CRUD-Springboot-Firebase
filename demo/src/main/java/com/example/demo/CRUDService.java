@@ -17,7 +17,7 @@ public class CRUDService {
     public String createCRUD(CRUD crud) throws InterruptedException, ExecutionException  {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection("crud-test")
-            .document(crud.getName()).set(crud);
+            .document(crud.getDocumentId()).create(crud);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
@@ -28,15 +28,18 @@ public class CRUDService {
         DocumentSnapshot document = future.get();
 
         CRUD crud;
-        if (document.exists()){
+        if (document.exists()) {
             crud = document.toObject(CRUD.class);
             return crud;
         }
         return null;
     }
 
-    public String updateCRUD(CRUD crud) {
-        return null;
+    public String updateCRUD(CRUD crud) throws InterruptedException, ExecutionException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        ApiFuture<WriteResult> Result = dbFirestore.collection("crud-test")
+                .document(crud.getDocumentId()).set(crud);
+        return Result.get().getUpdateTime().toString();
     }
 
     public String deleteCRUD(String documentId) {
