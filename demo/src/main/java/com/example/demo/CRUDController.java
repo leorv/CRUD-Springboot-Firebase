@@ -37,7 +37,7 @@ public class CRUDController {
     }
 
     @DeleteMapping(value = "/delete")
-    public CRUD deleteCRUD(@RequestParam String documentId) throws InterruptedException, ExecutionException {
+    public String deleteCRUD(@RequestParam String documentId) throws InterruptedException, ExecutionException {
         return crudService.deleteCRUD(documentId);
     }
 
